@@ -11,14 +11,14 @@ var Day = React.createClass({
     endDate: React.PropTypes.object,
     excludeDates: React.PropTypes.array,
     filterDate: React.PropTypes.func,
+    focused: React.PropTypes.object,
     includeDates: React.PropTypes.array,
     maxDate: React.PropTypes.object,
     minDate: React.PropTypes.object,
     month: React.PropTypes.number,
     onClick: React.PropTypes.func,
     selected: React.PropTypes.object,
-    startDate: React.PropTypes.object,
-    focused: React.PropTypes.object
+    startDate: React.PropTypes.object
   },
 
   handleClick (event) {
@@ -55,7 +55,7 @@ var Day = React.createClass({
   },
 
   getClassNames () {
-    const selectedAndFucused = isSameDay(this.props.selected, this.props.focused);
+    const selectedAndFucused = isSameDay(this.props.selected, this.props.focused)
     return classnames('react-datepicker__day', {
       'react-datepicker__day--disabled': this.isDisabled(),
       'react-datepicker__day--selected': this.isSameDay(this.props.selected),

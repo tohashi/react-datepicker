@@ -9,14 +9,14 @@ var Week = React.createClass({
     endDate: React.PropTypes.object,
     excludeDates: React.PropTypes.array,
     filterDate: React.PropTypes.func,
+    focused: React.PropTypes.object,
     includeDates: React.PropTypes.array,
     maxDate: React.PropTypes.object,
     minDate: React.PropTypes.object,
     month: React.PropTypes.number,
     onDayClick: React.PropTypes.func,
     selected: React.PropTypes.object,
-    startDate: React.PropTypes.object,
-    focused: React.PropTypes.object
+    startDate: React.PropTypes.object
   },
 
   handleDayClick (day) {

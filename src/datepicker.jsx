@@ -29,6 +29,7 @@ var DatePicker = React.createClass({
     includeDates: React.PropTypes.array,
     inline: React.PropTypes.bool,
     isClearable: React.PropTypes.bool,
+    isKeyHandlable: React.PropTypes.bool,
     locale: React.PropTypes.string,
     maxDate: React.PropTypes.object,
     minDate: React.PropTypes.object,
@@ -50,8 +51,7 @@ var DatePicker = React.createClass({
     tabIndex: React.PropTypes.number,
     tetherConstraints: React.PropTypes.array,
     title: React.PropTypes.string,
-    todayButton: React.PropTypes.string,
-    isKeyHandlable: React.PropTypes.bool
+    todayButton: React.PropTypes.string
   },
 
   getDefaultProps () {
@@ -88,12 +88,12 @@ var DatePicker = React.createClass({
   setFocusedDateByKey (key) {
     this.setState({
       focused: nextFocus(this.state.focused, key)
-    });
+    })
   },
 
   setSelectedDateByKey (key) {
     if (key === 'Enter') {
-      this.setSelected(this.state.focused);
+      this.setSelected(this.state.focused)
     }
   },
 
@@ -135,7 +135,7 @@ var DatePicker = React.createClass({
     if (event.key === 'Enter' || event.key === 'Escape') {
       event.preventDefault()
       this.setOpen(false)
-      this.setSelectedDateByKey(event.key);
+      this.setSelectedDateByKey(event.key)
     } else if (event.key === 'Tab') {
       this.setOpen(false)
     } else if (this.props.isKeyHandlable) {

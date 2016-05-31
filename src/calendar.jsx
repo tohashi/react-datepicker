@@ -12,6 +12,7 @@ var Calendar = React.createClass({
     endDate: React.PropTypes.object,
     excludeDates: React.PropTypes.array,
     filterDate: React.PropTypes.func,
+    focused: React.PropTypes.object,
     includeDates: React.PropTypes.array,
     locale: React.PropTypes.string,
     maxDate: React.PropTypes.object,
@@ -22,8 +23,7 @@ var Calendar = React.createClass({
     selected: React.PropTypes.object,
     showYearDropdown: React.PropTypes.bool,
     startDate: React.PropTypes.object,
-    todayButton: React.PropTypes.string,
-    focused: React.PropTypes.object
+    todayButton: React.PropTypes.string
   },
 
   mixins: [require('react-onclickoutside')],
@@ -45,11 +45,11 @@ var Calendar = React.createClass({
     if (diffMonth < 0) {
       this.setState({
         date: this.state.date.clone().subtract(diffMonth * -1, 'month')
-      });
+      })
     } else if (diffMonth > 0) {
       this.setState({
         date: this.state.date.clone().add(diffMonth, 'month')
-      });
+      })
     }
   },
 
