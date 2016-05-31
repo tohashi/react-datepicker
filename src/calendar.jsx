@@ -2,7 +2,7 @@ import moment from 'moment'
 import YearDropdown from './year_dropdown'
 import Month from './month'
 import React from 'react'
-import { isSameDay, allDaysDisabledBefore, allDaysDisabledAfter, getEffectiveMinDate, getEffectiveMaxDate } from './date_utils'
+import { isSameDay, allDaysDisabledBefore, allDaysDisabledAfter, getEffectiveMinDate, getEffectiveMaxDate, diffOfMonth } from './date_utils'
 
 var Calendar = React.createClass({
   displayName: 'Calendar',
@@ -22,7 +22,8 @@ var Calendar = React.createClass({
     selected: React.PropTypes.object,
     showYearDropdown: React.PropTypes.bool,
     startDate: React.PropTypes.object,
-    todayButton: React.PropTypes.string
+    todayButton: React.PropTypes.string,
+    focused: React.PropTypes.object
   },
 
   mixins: [require('react-onclickoutside')],
@@ -38,6 +39,17 @@ var Calendar = React.createClass({
       this.setState({
         date: this.localizeMoment(nextProps.selected)
       })
+    }
+
+    const diffMonth = diffOfMonth(nextProps.focused, this.props.focused)
+    if (diffMonth < 0) {
+      this.setState({
+        date: this.state.date.clone().subtract(diffMonth * -1, 'month')
+      });
+    } else if (diffMonth > 0) {
+      this.setState({
+        date: this.state.date.clone().add(diffMonth, 'month')
+      });
     }
   },
 
@@ -176,7 +188,8 @@ var Calendar = React.createClass({
             filterDate={this.props.filterDate}
             selected={this.props.selected}
             startDate={this.props.startDate}
-            endDate={this.props.endDate} />
+            endDate={this.props.endDate}
+            focused={this.props.focused} />
         {this.renderTodayButton()}
       </div>
     )

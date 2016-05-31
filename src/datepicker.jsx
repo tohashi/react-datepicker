@@ -4,6 +4,8 @@ import React from 'react'
 import TetherComponent from './tether_component'
 import classnames from 'classnames'
 import { isSameDay } from './date_utils'
+import { nextFocus } from './focus_utils'
+import moment from 'moment'
 
 var outsideClickIgnoreClass = 'react-datepicker-ignore-onclickoutside'
 
@@ -48,7 +50,8 @@ var DatePicker = React.createClass({
     tabIndex: React.PropTypes.number,
     tetherConstraints: React.PropTypes.array,
     title: React.PropTypes.string,
-    todayButton: React.PropTypes.string
+    todayButton: React.PropTypes.string,
+    isKeyHandlable: React.PropTypes.bool
   },
 
   getDefaultProps () {
@@ -66,18 +69,32 @@ var DatePicker = React.createClass({
           to: 'window',
           attachment: 'together'
         }
-      ]
+      ],
+      isKeyHandlable: false
     }
   },
 
   getInitialState () {
     return {
-      open: false
+      open: false,
+      focused: moment()
     }
   },
 
   setOpen (open) {
     this.setState({ open })
+  },
+
+  setFocusedDateByKey (key) {
+    this.setState({
+      focused: nextFocus(this.state.focused, key)
+    });
+  },
+
+  setSelectedDateByKey (key) {
+    if (key === 'Enter') {
+      this.setSelected(this.state.focused);
+    }
   },
 
   handleFocus (event) {
@@ -118,8 +135,12 @@ var DatePicker = React.createClass({
     if (event.key === 'Enter' || event.key === 'Escape') {
       event.preventDefault()
       this.setOpen(false)
+      this.setSelectedDateByKey(event.key);
     } else if (event.key === 'Tab') {
       this.setOpen(false)
+    } else if (this.props.isKeyHandlable) {
+      event.preventDefault()
+      this.setFocusedDateByKey(event.key)
     }
   },
 
@@ -137,6 +158,7 @@ var DatePicker = React.createClass({
         locale={this.props.locale}
         dateFormat={this.props.dateFormatCalendar}
         selected={this.props.selected}
+        focused={this.state.focused}
         onSelect={this.handleSelect}
         openToDate={this.props.openToDate}
         minDate={this.props.minDate}

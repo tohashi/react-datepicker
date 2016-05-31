@@ -15,7 +15,8 @@ var Week = React.createClass({
     month: React.PropTypes.number,
     onDayClick: React.PropTypes.func,
     selected: React.PropTypes.object,
-    startDate: React.PropTypes.object
+    startDate: React.PropTypes.object,
+    focused: React.PropTypes.object
   },
 
   handleDayClick (day) {
@@ -41,7 +42,8 @@ var Week = React.createClass({
             filterDate={this.props.filterDate}
             selected={this.props.selected}
             startDate={this.props.startDate}
-            endDate={this.props.endDate} />
+            endDate={this.props.endDate}
+            focused={this.props.focused} />
       )
     })
   },
