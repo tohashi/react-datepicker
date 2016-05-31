@@ -4,7 +4,6 @@ import React from 'react'
 import TetherComponent from './tether_component'
 import classnames from 'classnames'
 import { isSameDay } from './date_utils'
-import { nextFocus } from './focus_utils'
 import moment from 'moment'
 
 var outsideClickIgnoreClass = 'react-datepicker-ignore-onclickoutside'
@@ -87,7 +86,7 @@ var DatePicker = React.createClass({
 
   setFocusedDateByKey (key) {
     this.setState({
-      focused: nextFocus(this.state.focused, key)
+      focused: this.nextFocus(key)
     })
   },
 
@@ -100,6 +99,20 @@ var DatePicker = React.createClass({
   handleFocus (event) {
     this.props.onFocus(event)
     this.setOpen(true)
+  },
+
+  nextFocus (key) {
+    switch (key) {
+      case 'ArrowUp':
+        return this.state.focused.clone().subtract(7, 'days')
+      case 'ArrowDown':
+        return this.state.focused.clone().add(7, 'days')
+      case 'ArrowLeft':
+        return this.state.focused.clone().subtract(1, 'days')
+      case 'ArrowRight':
+        return this.state.focused.clone().add(1, 'days')
+      default:
+    }
   },
 
   handleBlur (event) {

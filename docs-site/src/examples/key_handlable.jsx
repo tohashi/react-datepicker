@@ -18,7 +18,7 @@ export default React.createClass({
   },
 
   render () {
-    return <div className="row">
+    return (<div className="row">
       <pre className="column example__code">
         <code className="jsx">
           {"<DatePicker"}<br />
@@ -29,10 +29,10 @@ export default React.createClass({
       </pre>
       <div className="column">
         <DatePicker
-            isKeyHandlable={true}
+            isKeyHandlable
             selected={this.state.startDate}
             onChange={this.handleChange} />
       </div>
-    </div>
+    </div>)
   }
 })
