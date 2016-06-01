@@ -142,6 +142,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      disabled: false,
 	      onFocus: function onFocus() {},
 	      onBlur: function onBlur() {},
+	      onInputKeyDown: function onInputKeyDown() {},
 
 	      popoverAttachment: 'top left',
 	      popoverTargetAttachment: 'bottom left',

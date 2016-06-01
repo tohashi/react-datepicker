@@ -61,6 +61,7 @@ var DatePicker = React.createClass({
       disabled: false,
       onFocus () {},
       onBlur () {},
+      onInputKeyDown () {},
       popoverAttachment: 'top left',
       popoverTargetAttachment: 'bottom left',
       popoverTargetOffset: '10px 0',
