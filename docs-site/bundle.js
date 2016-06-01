@@ -19978,7 +19978,7 @@
 
 	var _example_components2 = _interopRequireDefault(_example_components);
 
-	var _hero_example = __webpack_require__(462);
+	var _hero_example = __webpack_require__(463);
 
 	var _hero_example2 = _interopRequireDefault(_hero_example);
 
@@ -20188,9 +20188,13 @@
 
 	var _open_to_date2 = _interopRequireDefault(_open_to_date);
 
-	__webpack_require__(460);
+	var _key_handlable = __webpack_require__(460);
+
+	var _key_handlable2 = _interopRequireDefault(_key_handlable);
 
 	__webpack_require__(461);
+
+	__webpack_require__(462);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20259,6 +20263,9 @@
 	  }, {
 	    title: 'Open to date',
 	    component: _react2.default.createElement(_open_to_date2.default, null)
+	  }, {
+	    title: 'Change Focus By Key',
+	    component: _react2.default.createElement(_key_handlable2.default, null)
 	  }],
 
 	  renderExamples: function renderExamples() {
@@ -35592,6 +35599,10 @@
 
 	var _date_utils = __webpack_require__(430);
 
+	var _moment = __webpack_require__(327);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -35618,6 +35629,7 @@
 	    includeDates: _react2.default.PropTypes.array,
 	    inline: _react2.default.PropTypes.bool,
 	    isClearable: _react2.default.PropTypes.bool,
+	    isKeyHandlable: _react2.default.PropTypes.bool,
 	    locale: _react2.default.PropTypes.string,
 	    maxDate: _react2.default.PropTypes.object,
 	    minDate: _react2.default.PropTypes.object,
@@ -35657,20 +35669,45 @@
 	      tetherConstraints: [{
 	        to: 'window',
 	        attachment: 'together'
-	      }]
+	      }],
+	      isKeyHandlable: false
 	    };
 	  },
 	  getInitialState: function getInitialState() {
 	    return {
-	      open: false
+	      open: false,
+	      focused: (0, _moment2.default)()
 	    };
 	  },
 	  setOpen: function setOpen(open) {
 	    this.setState({ open: open });
 	  },
+	  setFocusedDateByKey: function setFocusedDateByKey(key) {
+	    this.setState({
+	      focused: this.nextFocus(key)
+	    });
+	  },
+	  setSelectedDateByKey: function setSelectedDateByKey(key) {
+	    if (key === 'Enter') {
+	      this.setSelected(this.state.focused);
+	    }
+	  },
 	  handleFocus: function handleFocus(event) {
 	    this.props.onFocus(event);
 	    this.setOpen(true);
+	  },
+	  nextFocus: function nextFocus(key) {
+	    switch (key) {
+	      case 'ArrowUp':
+	        return this.state.focused.clone().subtract(7, 'days');
+	      case 'ArrowDown':
+	        return this.state.focused.clone().add(7, 'days');
+	      case 'ArrowLeft':
+	        return this.state.focused.clone().subtract(1, 'days');
+	      case 'ArrowRight':
+	        return this.state.focused.clone().add(1, 'days');
+	      default:
+	    }
 	  },
 	  handleBlur: function handleBlur(event) {
 	    if (this.state.open) {
@@ -35700,8 +35737,12 @@
 	    if (event.key === 'Enter' || event.key === 'Escape') {
 	      event.preventDefault();
 	      this.setOpen(false);
+	      this.setSelectedDateByKey(event.key);
 	    } else if (event.key === 'Tab') {
 	      this.setOpen(false);
+	    } else if (this.props.isKeyHandlable) {
+	      event.preventDefault();
+	      this.setFocusedDateByKey(event.key);
 	    }
 	  },
 	  onClearClick: function onClearClick(event) {
@@ -35717,6 +35758,7 @@
 	      locale: this.props.locale,
 	      dateFormat: this.props.dateFormatCalendar,
 	      selected: this.props.selected,
+	      focused: this.state.focused,
 	      onSelect: this.handleSelect,
 	      openToDate: this.props.openToDate,
 	      minDate: this.props.minDate,
@@ -49704,6 +49746,7 @@
 	exports.allDaysDisabledAfter = allDaysDisabledAfter;
 	exports.getEffectiveMinDate = getEffectiveMinDate;
 	exports.getEffectiveMaxDate = getEffectiveMaxDate;
+	exports.diffOfMonth = diffOfMonth;
 
 	var _moment = __webpack_require__(327);
 
@@ -49789,6 +49832,12 @@
 	  }
 	}
 
+	function diffOfMonth(moment1, moment2) {
+	  var month1 = moment1.year() * 12 + moment1.month();
+	  var month2 = moment2.year() * 12 + moment2.month();
+	  return month1 - month2;
+	}
+
 /***/ },
 /* 431 */
 /***/ function(module, exports, __webpack_require__) {
@@ -49823,6 +49872,7 @@
 	    endDate: _react2.default.PropTypes.object,
 	    excludeDates: _react2.default.PropTypes.array,
 	    filterDate: _react2.default.PropTypes.func,
+	    focused: _react2.default.PropTypes.object,
 	    includeDates: _react2.default.PropTypes.array,
 	    locale: _react2.default.PropTypes.string,
 	    maxDate: _react2.default.PropTypes.object,
@@ -49847,6 +49897,17 @@
 	    if (nextProps.selected && !(0, _date_utils.isSameDay)(nextProps.selected, this.props.selected)) {
 	      this.setState({
 	        date: this.localizeMoment(nextProps.selected)
+	      });
+	    }
+
+	    var diffMonth = (0, _date_utils.diffOfMonth)(nextProps.focused, this.props.focused);
+	    if (diffMonth < 0) {
+	      this.setState({
+	        date: this.state.date.clone().subtract(diffMonth * -1, 'month')
+	      });
+	    } else if (diffMonth > 0) {
+	      this.setState({
+	        date: this.state.date.clone().add(diffMonth, 'month')
 	      });
 	    }
 	  },
@@ -49982,7 +50043,8 @@
 	        filterDate: this.props.filterDate,
 	        selected: this.props.selected,
 	        startDate: this.props.startDate,
-	        endDate: this.props.endDate }),
+	        endDate: this.props.endDate,
+	        focused: this.props.focused }),
 	      this.renderTodayButton()
 	    );
 	  }
@@ -50326,6 +50388,7 @@
 	    endDate: _react2.default.PropTypes.object,
 	    excludeDates: _react2.default.PropTypes.array,
 	    filterDate: _react2.default.PropTypes.func,
+	    focused: _react2.default.PropTypes.object,
 	    includeDates: _react2.default.PropTypes.array,
 	    maxDate: _react2.default.PropTypes.object,
 	    minDate: _react2.default.PropTypes.object,
@@ -50365,7 +50428,8 @@
 	        filterDate: _this.props.filterDate,
 	        selected: _this.props.selected,
 	        startDate: _this.props.startDate,
-	        endDate: _this.props.endDate });
+	        endDate: _this.props.endDate,
+	        focused: _this.props.focused });
 	    });
 	  },
 	  render: function render() {
@@ -50403,6 +50467,7 @@
 	    endDate: _react2.default.PropTypes.object,
 	    excludeDates: _react2.default.PropTypes.array,
 	    filterDate: _react2.default.PropTypes.func,
+	    focused: _react2.default.PropTypes.object,
 	    includeDates: _react2.default.PropTypes.array,
 	    maxDate: _react2.default.PropTypes.object,
 	    minDate: _react2.default.PropTypes.object,
@@ -50435,7 +50500,8 @@
 	        filterDate: _this.props.filterDate,
 	        selected: _this.props.selected,
 	        startDate: _this.props.startDate,
-	        endDate: _this.props.endDate });
+	        endDate: _this.props.endDate,
+	        focused: _this.props.focused });
 	    });
 	  },
 	  render: function render() {
@@ -50479,6 +50545,7 @@
 	    endDate: _react2.default.PropTypes.object,
 	    excludeDates: _react2.default.PropTypes.array,
 	    filterDate: _react2.default.PropTypes.func,
+	    focused: _react2.default.PropTypes.object,
 	    includeDates: _react2.default.PropTypes.array,
 	    maxDate: _react2.default.PropTypes.object,
 	    minDate: _react2.default.PropTypes.object,
@@ -50519,9 +50586,11 @@
 	    return this.props.month !== undefined && this.props.month !== this.props.day.month();
 	  },
 	  getClassNames: function getClassNames() {
+	    var selectedAndFucused = (0, _date_utils.isSameDay)(this.props.selected, this.props.focused);
 	    return (0, _classnames2.default)('react-datepicker__day', {
 	      'react-datepicker__day--disabled': this.isDisabled(),
 	      'react-datepicker__day--selected': this.isSameDay(this.props.selected),
+	      'react-datepicker__day--focused': !selectedAndFucused && this.isSameDay(this.props.focused),
 	      'react-datepicker__day--in-range': this.isInRange(),
 	      'react-datepicker__day--today': this.isSameDay((0, _moment2.default)()),
 	      'react-datepicker__day--weekend': this.isWeekend(),
@@ -53967,14 +54036,82 @@
 
 /***/ },
 /* 460 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDatepicker = __webpack_require__(325);
+
+	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
+
+	var _moment = __webpack_require__(327);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _react2.default.createClass({
+	  displayName: 'KeyHandlable',
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      startDate: (0, _moment2.default)()
+	    };
+	  },
+	  handleChange: function handleChange(date) {
+	    this.setState({
+	      startDate: date
+	    });
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      'div',
+	      { className: 'row' },
+	      _react2.default.createElement(
+	        'pre',
+	        { className: 'column example__code' },
+	        _react2.default.createElement(
+	          'code',
+	          { className: 'jsx' },
+	          "<DatePicker",
+	          _react2.default.createElement('br', null),
+	          "isKeyHandlable={'true'}",
+	          _react2.default.createElement('br', null),
+	          "selected={this.state.startDate}",
+	          _react2.default.createElement('br', null),
+	          "onChange={this.handleChange} />"
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'column' },
+	        _react2.default.createElement(_reactDatepicker2.default, {
+	          isKeyHandlable: true,
+	          selected: this.state.startDate,
+	          onChange: this.handleChange })
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 461 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 461 */
-460,
 /* 462 */
+461,
+/* 463 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

@@ -129,6 +129,11 @@
     color: #fff; }
     .react-datepicker__day--selected:hover, .react-datepicker__day--in-range:hover {
       background-color: #1d5d90; }
+  .react-datepicker__day--focused {
+    border-radius: 4px;
+    background-color: #97c5ea; }
+    .react-datepicker__day--focused:hover {
+      background-color: #82b9e6; }
   .react-datepicker__day--disabled {
     cursor: default;
     color: #ccc; }
