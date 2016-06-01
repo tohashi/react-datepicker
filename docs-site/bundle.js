@@ -35637,6 +35637,7 @@
 	    onBlur: _react2.default.PropTypes.func,
 	    onChange: _react2.default.PropTypes.func.isRequired,
 	    onFocus: _react2.default.PropTypes.func,
+	    onInputKeyDown: _react2.default.PropTypes.func,
 	    openToDate: _react2.default.PropTypes.object,
 	    placeholderText: _react2.default.PropTypes.string,
 	    popoverAttachment: _react2.default.PropTypes.string,
@@ -35744,6 +35745,7 @@
 	      event.preventDefault();
 	      this.setFocusedDateByKey(event.key);
 	    }
+	    this.props.onInputKeyDown(event);
 	  },
 	  onClearClick: function onClearClick(event) {
 	    event.preventDefault();
