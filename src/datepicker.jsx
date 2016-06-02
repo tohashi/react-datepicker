@@ -4,6 +4,7 @@ import React from 'react'
 import TetherComponent from './tether_component'
 import classnames from 'classnames'
 import { isSameDay } from './date_utils'
+import moment from 'moment'
 
 var outsideClickIgnoreClass = 'react-datepicker-ignore-onclickoutside'
 
@@ -27,6 +28,7 @@ var DatePicker = React.createClass({
     includeDates: React.PropTypes.array,
     inline: React.PropTypes.bool,
     isClearable: React.PropTypes.bool,
+    isKeyHandlable: React.PropTypes.bool,
     locale: React.PropTypes.string,
     maxDate: React.PropTypes.object,
     minDate: React.PropTypes.object,
@@ -34,6 +36,7 @@ var DatePicker = React.createClass({
     onBlur: React.PropTypes.func,
     onChange: React.PropTypes.func.isRequired,
     onFocus: React.PropTypes.func,
+    onInputKeyDown: React.PropTypes.func,
     openToDate: React.PropTypes.object,
     placeholderText: React.PropTypes.string,
     popoverAttachment: React.PropTypes.string,
@@ -58,6 +61,7 @@ var DatePicker = React.createClass({
       disabled: false,
       onFocus () {},
       onBlur () {},
+      onInputKeyDown () {},
       popoverAttachment: 'top left',
       popoverTargetAttachment: 'bottom left',
       popoverTargetOffset: '10px 0',
@@ -66,13 +70,15 @@ var DatePicker = React.createClass({
           to: 'window',
           attachment: 'together'
         }
-      ]
+      ],
+      isKeyHandlable: false
     }
   },
 
   getInitialState () {
     return {
-      open: false
+      open: false,
+      focused: moment()
     }
   },
 
@@ -80,9 +86,35 @@ var DatePicker = React.createClass({
     this.setState({ open })
   },
 
+  setFocusedDateByKey (key) {
+    const next = this.nextFocus(key)
+    this.setState({ focused: next })
+  },
+
+  setSelectedDateByKey (key) {
+    if (key === 'Enter') {
+      this.setSelected(this.state.focused)
+    }
+  },
+
   handleFocus (event) {
     this.props.onFocus(event)
     this.setOpen(true)
+  },
+
+  nextFocus (key) {
+    switch (key) {
+      case 'ArrowUp':
+        return this.state.focused.clone().subtract(7, 'days')
+      case 'ArrowDown':
+        return this.state.focused.clone().add(7, 'days')
+      case 'ArrowLeft':
+        return this.state.focused.clone().subtract(1, 'days')
+      case 'ArrowRight':
+        return this.state.focused.clone().add(1, 'days')
+      default:
+        return this.state.focused
+    }
   },
 
   handleBlur (event) {
@@ -118,9 +150,14 @@ var DatePicker = React.createClass({
     if (event.key === 'Enter' || event.key === 'Escape') {
       event.preventDefault()
       this.setOpen(false)
+      this.setSelectedDateByKey(event.key)
     } else if (event.key === 'Tab') {
       this.setOpen(false)
+    } else if (this.props.isKeyHandlable) {
+      event.preventDefault()
+      this.setFocusedDateByKey(event.key)
     }
+    this.props.onInputKeyDown(event)
   },
 
   onClearClick (event) {
@@ -137,6 +174,7 @@ var DatePicker = React.createClass({
         locale={this.props.locale}
         dateFormat={this.props.dateFormatCalendar}
         selected={this.props.selected}
+        focused={this.state.focused}
         onSelect={this.handleSelect}
         openToDate={this.props.openToDate}
         minDate={this.props.minDate}
