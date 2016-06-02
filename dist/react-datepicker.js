@@ -164,9 +164,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.setState({ open: open });
 	  },
 	  setFocusedDateByKey: function setFocusedDateByKey(key) {
-	    this.setState({
-	      focused: this.nextFocus(key)
-	    });
+	    var next = this.nextFocus(key);
+	    this.setState({ focused: next });
 	  },
 	  setSelectedDateByKey: function setSelectedDateByKey(key) {
 	    if (key === 'Enter') {
@@ -188,6 +187,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      case 'ArrowRight':
 	        return this.state.focused.clone().add(1, 'days');
 	      default:
+	        return this.state.focused;
 	    }
 	  },
 	  handleBlur: function handleBlur(event) {

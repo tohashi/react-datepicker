@@ -87,9 +87,8 @@ var DatePicker = React.createClass({
   },
 
   setFocusedDateByKey (key) {
-    this.setState({
-      focused: this.nextFocus(key)
-    })
+    const next = this.nextFocus(key)
+    this.setState({ focused: next })
   },
 
   setSelectedDateByKey (key) {
@@ -114,6 +113,7 @@ var DatePicker = React.createClass({
       case 'ArrowRight':
         return this.state.focused.clone().add(1, 'days')
       default:
+        return this.state.focused
     }
   },
 
