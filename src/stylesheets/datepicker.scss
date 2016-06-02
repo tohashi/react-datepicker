@@ -142,6 +142,15 @@
     }
   }
 
+  &--focused {
+    border-radius: $border-radius;
+    background-color: $focused-color;
+
+    &:hover {
+      background-color: darken($focused-color, 5%);
+    }
+  }
+
   &--disabled {
     cursor: default;
     color: $muted-color;
