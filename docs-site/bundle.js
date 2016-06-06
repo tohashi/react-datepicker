@@ -35638,6 +35638,7 @@
 	    onChange: _react2.default.PropTypes.func.isRequired,
 	    onFocus: _react2.default.PropTypes.func,
 	    onInputKeyDown: _react2.default.PropTypes.func,
+	    onInputClick: _react2.default.PropTypes.func,
 	    openToDate: _react2.default.PropTypes.object,
 	    placeholderText: _react2.default.PropTypes.string,
 	    popoverAttachment: _react2.default.PropTypes.string,
@@ -35664,6 +35665,7 @@
 	      onFocus: function onFocus() {},
 	      onBlur: function onBlur() {},
 	      onInputKeyDown: function onInputKeyDown() {},
+	      onInputClick: function onInputClick() {},
 
 	      popoverAttachment: 'top left',
 	      popoverTargetAttachment: 'bottom left',
@@ -35734,6 +35736,7 @@
 	    if (!this.props.disabled) {
 	      this.setOpen(true);
 	    }
+	    this.props.onInputClick();
 	  },
 	  onInputKeyDown: function onInputKeyDown(event) {
 	    if (event.key === 'Enter' || event.key === 'Escape') {
