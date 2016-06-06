@@ -37,6 +37,7 @@ var DatePicker = React.createClass({
     onChange: React.PropTypes.func.isRequired,
     onFocus: React.PropTypes.func,
     onInputKeyDown: React.PropTypes.func,
+    onInputClick: React.PropTypes.func,
     openToDate: React.PropTypes.object,
     placeholderText: React.PropTypes.string,
     popoverAttachment: React.PropTypes.string,
@@ -62,6 +63,7 @@ var DatePicker = React.createClass({
       onFocus () {},
       onBlur () {},
       onInputKeyDown () {},
+      onInputClick () {},
       popoverAttachment: 'top left',
       popoverTargetAttachment: 'bottom left',
       popoverTargetOffset: '10px 0',
@@ -144,6 +146,7 @@ var DatePicker = React.createClass({
     if (!this.props.disabled) {
       this.setOpen(true)
     }
+    this.props.onInputClick();
   },
 
   onInputKeyDown (event) {
