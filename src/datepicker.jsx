@@ -153,7 +153,9 @@ var DatePicker = React.createClass({
     if (event.key === 'Enter' || event.key === 'Escape') {
       event.preventDefault()
       this.setOpen(false)
-      this.setSelectedDateByKey(event.key)
+      if (this.props.isKeyHandlable) {
+        this.setSelectedDateByKey(event.key)
+      }
     } else if (event.key === 'Tab') {
       this.setOpen(false)
     } else if (this.props.isKeyHandlable) {
