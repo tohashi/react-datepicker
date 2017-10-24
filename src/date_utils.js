@@ -50,9 +50,3 @@ export function getEffectiveMaxDate ({ maxDate, includeDates }) {
     return maxDate
   }
 }
-
-export function diffOfMonth (moment1, moment2) {
-  const month1 = moment1.year() * 12 + moment1.month()
-  const month2 = moment2.year() * 12 + moment2.month()
-  return month1 - month2
-}

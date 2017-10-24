@@ -21,7 +21,6 @@ import YearDropdown from './examples/year_dropdown'
 import Today from './examples/today'
 import Inline from './examples/inline'
 import OpenToDate from './examples/open_to_date'
-import KeyHandlable from './examples/key_handlable'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import './style.scss'
@@ -109,10 +108,6 @@ export default React.createClass({
     {
       title: 'Open to date',
       component: <OpenToDate />
-    },
-    {
-      title: 'Change Focus By Key',
-      component: <KeyHandlable />
     }
   ],
 
