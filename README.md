@@ -28,6 +28,9 @@ var moment = require('moment');
 
 require('react-datepicker/dist/react-datepicker.css');
 
+// CSS Modules, react-datepicker-cssmodules.css
+// require('react-datepicker/dist/react-datepicker-cssmodules.css');
+
 var Example = React.createClass({
   displayName: 'Example',
 
@@ -58,6 +61,17 @@ The most basic use of the DatePicker can be described with:
 ```js
 <DatePicker selected={this.state.date} onChange={this.handleChange} />
 ```
+
+You can use `onSelect` event handler which fires each time some calendar date has been selected
+
+```js
+<DatePicker selected={this.state.date}
+  onSelect={this.handleSelect //when day is clicked}
+  onChange={this.handleChange //only when value has changed}
+/>
+```
+
+`onClickOutside` handler may be useful to close datepicker in `inline` mode
 
 See [here](https://github.com/Hacker0x01/react-datepicker/blob/master/docs/datepicker.md) for a full list of props that may be passed to the component. Examples are given on the [main website](https://hacker0x01.github.io/react-datepicker).
 
@@ -91,10 +105,26 @@ Unfortunately it is difficult to support legacy browsers while maintaining our a
 
 ## Local Development
 
-The `master` branch contains the latest version of the Datepicker component. To start your example app, you can run `npm start`. This starts a simple webserver on http://localhost:8080. The server will automatically compile your changes, run tests and execute linters. To help you develop the component we’ve set up some tests that covers the basic functionality (can be found in  `/tests`). Even though we’re big fans of testing, this only covers a small piece of the component. We highly recommend you add tests when you’re adding new functionality.
+The `master` branch contains the latest version of the Datepicker component. To start your example app, you can run `npm start`. This starts a simple webserver on http://localhost:8080.
+
+You can run `npm test` to execute the test suite and linters. To help you develop the component we’ve set up some tests that covers the basic functionality (can be found in  `/tests`). Even though we’re big fans of testing, this only covers a small piece of the component. We highly recommend you add tests when you’re adding new functionality.
 
 ### The examples
 The examples are hosted within the docs folder and are ran in the simple add that loads the Datepicker. To extend the examples with a new example, you can simply duplicate one of the existing examples and change the unique properties of your example.
+
+## Accessibility
+
+### Keyboard support
+
+* *Left*: Move to the previous day.
+* *Right*: Move to the next day.
+* *Up*: Move to the previous week.
+* *Down*: Move to the next week.
+* *PgUp*: Move to the previous month.
+* *PgDn*: Move to the next month.
+* *Home*: Move to the previous year.
+* *End*: Move to the next year.
+* *Enter/Esc/Tab*: close the calendar. (Enter & Esc calls preventDefautl)
 
 ## License
 

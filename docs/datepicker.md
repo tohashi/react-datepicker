@@ -6,14 +6,39 @@ General datepicker component.
 Props
 -----
 
+### `autoComplete`
+
+type: `string`
+
+
+### `autoFocus`
+
+type: `bool`
+
+
+### `calendarClassName`
+
+type: `string`
+
+
+### `children`
+
+type: `node`
+
+
 ### `className`
 
 type: `string`
 
 
+### `customInput`
+
+type: `element`
+
+
 ### `dateFormat`
 
-type: `string`
+type: `union(string|array)`
 
 
 ### `dateFormatCalendar`
@@ -26,6 +51,18 @@ defaultValue: `'MMMM YYYY'`
 
 type: `bool`
 defaultValue: `false`
+
+
+### `disabledKeyboardNavigation`
+
+type: `bool`
+defaultValue: `false`
+
+
+### `dropdownMode` (required)
+
+type: `enum('scroll'|'select')`
+defaultValue: `'scroll'`
 
 
 ### `endDate`
@@ -43,6 +80,21 @@ type: `array`
 type: `func`
 
 
+### `fixedHeight`
+
+type: `bool`
+
+
+### `forceShowMonthNavigation`
+
+type: `bool`
+
+
+### `highlightDates`
+
+type: `array`
+
+
 ### `id`
 
 type: `string`
@@ -51,6 +103,11 @@ type: `string`
 ### `includeDates`
 
 type: `array`
+
+
+### `inline`
+
+type: `bool`
 
 
 ### `isClearable`
@@ -73,6 +130,12 @@ type: `object`
 type: `object`
 
 
+### `monthsShown`
+
+type: `number`
+defaultValue: `1`
+
+
 ### `name`
 
 type: `string`
@@ -89,11 +152,42 @@ defaultValue: `function() {}`
 type: `func`
 defaultValue: `function() {}`
 
+### `onSelect`
+
+type: `func`
+defaultValue: `function() {}`
+
+### `onClickOutside`
+
+type: `func`
+defaultValue: `function() {}`
+
+
+### `onChangeRaw`
+
+type: `func`
+
 
 ### `onFocus`
 
 type: `func`
 defaultValue: `function() {}`
+
+
+### `onMonthChange`
+
+type: `func`
+defaultValue: `function() {}`
+
+
+### `openToDate`
+
+type: `object`
+
+
+### `peekNextMonth`
+
+type: `bool`
 
 
 ### `placeholderText`
@@ -134,9 +228,34 @@ type: `any`
 type: `bool`
 
 
+### `scrollableYearDropdown`
+
+type: `bool`
+
+
 ### `selected`
 
 type: `object`
+
+
+### `selectsEnd`
+
+type: `bool`
+
+
+### `selectsStart`
+
+type: `bool`
+
+
+### `showMonthDropdown`
+
+type: `bool`
+
+
+### `showWeekNumbers`
+
+type: `bool`
 
 
 ### `showYearDropdown`
@@ -173,4 +292,16 @@ type: `string`
 ### `todayButton`
 
 type: `string`
+
+
+### `utcOffset`
+
+type: `number`
+defaultValue: `moment().utcOffset()`
+
+
+### `withPortal`
+
+type: `bool`
+defaultValue: `false`
 
